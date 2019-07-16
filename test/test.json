@@ -1,0 +1,68 @@
+{
+  "receiver": "rocketchat-scrum",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighLoadAlert",
+        "cluster": "production",
+        "owner": "Scrum Team One",
+        "replica": "prometheus-server",
+        "datawarehouse": "europe-west-3a",
+        "job": "kubernetes-pods",
+        "kubernetes_namespace": "test-namespace",
+        "kubernetes_pod_name": "test-pod-1",
+        "statefulset_kubernetes_io_pod_name": "test-pod-1",
+        "severity": "P3"
+      },
+      "annotations": {
+        "description": "Test Service is experiencing high load for last 10 minutes - CPU load avg. 98%. Memory load avg. 73%. Network load avg. 38%",
+        "summary": "Test Service experiencing high load"
+      },
+      "startsAt": "2019-07-15T11:24:55.5121419Z",
+      "generatorURL": "http://prometheus-server:80/graph?g0.expr=dummyQuery&g0.tab=1'"
+    },{
+      "status": "resolved",
+      "labels": {
+        "alertname": "DataNodeOutage",
+        "cluster": "production",
+        "owner": "Scrum Team Two",
+        "replica": "prometheus-server",
+        "datawarehouse": "europe-west-2",
+        "severity": "P1"
+      },
+      "annotations": {
+        "description": "There has been a network connections issues to Data Node DateWarehouse_3. It has been unreachable for last 3 minutes.",
+        "summary": "Data Node DateWarehouse_3 offline"
+      },
+      "startsAt": "2019-07-15T11:24:55.5121419Z",
+      "endsAt": "2019-07-15T11:40:55.5121419Z",
+      "generatorURL": "http://prometheus-server:80/graph?g0.expr=dummyQuery&g0.tab=1'"
+    },{
+      "status": "resolved",
+      "labels": {
+        "alertname": "LocationHighTemp",
+        "cluster": "none",
+        "owner": "Lab Team",
+        "replica": "prometheus-server",
+        "datawarehouse": "company-location-2",
+        "severity": "P5"
+      },
+      "annotations": {
+        "description": "High Temperature (exceeding 40°C over 45 minutes) reported in location Lab Room",
+        "summary": "High Temperature in Lab Room"
+      },
+      "startsAt": "2019-07-15T11:34:55.5121419Z",
+      "endsAt": "2019-07-15T11:40:55.5121419Z",
+      "generatorURL": "http://prometheus-server:80/graph?g0.expr=dummyQuery&g0.tab=1'"
+    }
+  ],
+  "groupLabels": {},
+  "commonLabels": {},
+  "commonAnnotations": {
+    },
+  "externalURL": "",
+  "version": "4",
+  "groupKey": "{}/{owner=\"rio\"}:{}"
+}
