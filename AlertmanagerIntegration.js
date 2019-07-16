@@ -63,6 +63,11 @@ class Script {
           attachmentElement.color = "good";
           attachmentElement.collapsed = true;
           attachmentElement.author_icon = ICON_CHECKMARK;
+
+          if(!!alertValue.endsAt){
+           let dateDiff = Math.abs(Date.parse(alertValue.endsAt)-Date.parse(alertValue.startsAt))/1000;
+           attachmentElement.author_name = "Alert lasted for: "+secondsToHumanReadableDuration(dateDiff);
+          }
         } else if (alertValue.status == "firing") {
           attachmentElement.color = "danger";
           attachmentElement.thumb_url = ICON_WARNING;
@@ -72,12 +77,6 @@ class Script {
         attachmentElement.title_link = translateUri(alertValue.generatorURL);
 
         attachmentElement.text = alertValue.annotations.description;
-
-        if(!!alertValue.endsAt){
-         let dateDiff = Math.abs(Date.parse(alertValue.endsAt)-Date.parse(alertValue.startsAt))/1000;
-         attachmentElement.author_name = "Alert lasted for: "+secondsToHumanReadableDuration(dateDiff);
-        }
-
 
         Object.keys(alertValue.labels).forEach(function(extract) {
           if (!EXCLUDE_LABELS.includes(extract)){
