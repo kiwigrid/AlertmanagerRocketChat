@@ -73,7 +73,14 @@ class Script {
           attachmentElement.thumb_url = ICON_WARNING;
         }
 
-        attachmentElement.title = (!!alertValue.annotations.summary) ? alertValue.labels.alertname + ": " + alertValue.annotations.summary : alertValue.labels.alertname;
+        attachmentElement.title = alertValue.labels.alertname;
+
+        if (!!alertValue.annotations.summary) {
+          attachmentElement.title = attachmentElement.title + + ": " + alertValue.annotations.summary;
+        } else if (!!alertValue.labels.container) {
+          attachmentElement.title = attachmentElement.title + + " at " + alertValue.labels.container;
+        }
+
         attachmentElement.title_link = translateUri(alertValue.generatorURL);
 
         attachmentElement.text = alertValue.annotations.description;
