@@ -73,7 +73,7 @@ class Script {
           attachmentElement.thumb_url = ICON_WARNING;
         }
 
-        attachmentElement.title = alertValue.labels.alertname + ": " + alertValue.annotations.summary;
+        attachmentElement.title = (!!alertValue.annotations.summary) ? alertValue.labels.alertname + ": " + alertValue.annotations.summary : alertValue.labels.alertname;
         attachmentElement.title_link = translateUri(alertValue.generatorURL);
 
         attachmentElement.text = alertValue.annotations.description;
