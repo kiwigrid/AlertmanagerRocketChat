@@ -86,6 +86,7 @@ class Script {
         }
 
         attachmentElement.author_link = translateUri(alertValue.generatorURL);
+        attachmentElement.title_link = translateUri(alertValue.generatorURL);
 
         attachmentElement.text = alertValue.annotations.description;
 
