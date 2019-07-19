@@ -49,6 +49,8 @@ class Script {
       }
 
       let attachments = [];
+      let fired = 0;
+      let resolved = 0;
       for (i=0; i< request.content.alerts.length; i++) {
         let attachmentElement = {};
         attachments.push(attachmentElement);
@@ -59,29 +61,31 @@ class Script {
         attachmentElement.color = "warning";
         attachmentElement.collapsed = false;
 
+        attachmentElement.author_name = alertValue.labels.alertname;
+
+        attachmentElement.collapsed = true;
+
         if (alertValue.status == "resolved") {
           attachmentElement.color = "good";
-          attachmentElement.collapsed = true;
           attachmentElement.author_icon = ICON_CHECKMARK;
-
           if(!!alertValue.endsAt){
            let dateDiff = Math.abs(Date.parse(alertValue.endsAt)-Date.parse(alertValue.startsAt))/1000;
-           attachmentElement.author_name = "Alert lasted for: "+secondsToHumanReadableDuration(dateDiff);
+           attachmentElement.author_name = attachmentElement.author_name + " finished after: "+secondsToHumanReadableDuration(dateDiff);
           }
+          resolved++;
         } else if (alertValue.status == "firing") {
           attachmentElement.color = "danger";
-          attachmentElement.thumb_url = ICON_WARNING;
+          attachmentElement.author_icon = ICON_WARNING;
+          fired++;
         }
-
-        attachmentElement.title = alertValue.labels.alertname;
 
         if (!!alertValue.annotations.summary) {
-          attachmentElement.title = attachmentElement.title + + ": " + alertValue.annotations.summary;
+          attachmentElement.title = alertValue.annotations.summary;
         } else if (!!alertValue.labels.container) {
-          attachmentElement.title = attachmentElement.title + + " at " + alertValue.labels.container;
+          attachmentElement.title = labels.container;
         }
 
-        attachmentElement.title_link = translateUri(alertValue.generatorURL);
+        attachmentElement.author_link = translateUri(alertValue.generatorURL);
 
         attachmentElement.text = alertValue.annotations.description;
 
@@ -99,9 +103,17 @@ class Script {
 
        }
 
+      var msgText = "";
+
+      let firedDisplay = fired > 0 ? fired + (fired == 1 ? " new alert was fired, " : "  new alerts were fired, ") : "";
+      let resolvedDisplay = resolved > 0 ? resolved + (resolved == 1 ? " old alert was resolved, " : "  old alerts were resolved, ") : "";
+
+      msgText = firedDisplay+resolvedDisplay+"and here are details:";
+
       return {
         content: {
           alias: alertUsername,
+          msg: msgText,
           attachments: attachments
         }
       };
