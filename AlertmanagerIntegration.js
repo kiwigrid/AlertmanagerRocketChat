@@ -84,7 +84,7 @@ class Script {
         } else if (!!alertValue.labels.container) {
           attachmentElement.title = alertValue.labels.container;
         } else {
-          attachmentElement.title = "Expand "+alertValue.labels.alertname+"details ";
+          attachmentElement.title = "Expand "+alertValue.labels.alertname+" details";
         }
 
         attachmentElement.author_link = translateUri(alertValue.generatorURL);
