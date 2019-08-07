@@ -57,9 +57,9 @@ class Script {
           let context = object;
           for (let i = 0; i < pathElems.length; i++) {
               let elemValue = context[pathElems[i]];
-              if (!!elemValue) (
+              if (!!elemValue) {
                   context = elemValue;
-              ) else {
+              } else {
                   return null;
               }
           }
