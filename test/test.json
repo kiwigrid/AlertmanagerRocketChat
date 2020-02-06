@@ -18,7 +18,9 @@
       },
       "annotations": {
         "description": "Test Service is experiencing high load for last 10 minutes - CPU load avg. 98%. Memory load avg. 73%. Network load avg. 38%",
-        "summary": "Test Service experiencing high load"
+        "summary": "Test Service experiencing high load",
+	"author_url": "https://github.com/kiwigrid/AlertmanagerRocketChat?author_url",
+	"url": "https://github.com/kiwigrid/AlertmanagerRocketChat?url"
       },
       "startsAt": "2019-07-15T11:24:55.5121419Z",
       "generatorURL": "http://prometheus-server:80/graph?g0.expr=dummyQuery&g0.tab=1'"
@@ -34,7 +36,8 @@
       },
       "annotations": {
         "description": "There has been a network connections issues to Data Node DateWarehouse_3. It has been unreachable for last 3 minutes.",
-        "summary": "Data Node DateWarehouse_3 offline"
+        "summary": "Data Node DateWarehouse_3 offline",
+	"runbook": "https://github.com/kiwigrid/AlertmanagerRocketChat?runbook"
       },
       "startsAt": "2019-07-15T11:24:55.5121419Z",
       "endsAt": "2019-07-15T11:40:55.5121419Z",
@@ -51,7 +54,8 @@
       },
       "annotations": {
         "description": "High Temperature (exceeding 40°C over 45 minutes) reported in location Lab Room",
-        "summary": "High Temperature in Lab Room"
+        "summary": "High Temperature in Lab Room",
+	"runbookURL": "https://github.com/kiwigrid/AlertmanagerRocketChat?runbookURL"
       },
       "startsAt": "2019-07-15T11:34:55.5121419Z",
       "endsAt": "2019-07-15T11:40:55.5121419Z",
