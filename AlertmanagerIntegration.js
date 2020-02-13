@@ -12,8 +12,8 @@ const USER_NAME_PATHS = [
 // relative to single alert
 const TITLE_LOCATION_PATHS = [
     ["annotations", "summary"],
-    ["labels", "container"]
-    ["labels", "alertname"],
+    ["labels", "container"],
+    ["labels", "alertname"]
 ];
 // relative to single alert
 const TEXT_LOCATION_PATHS = [
