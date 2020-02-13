@@ -3,6 +3,16 @@
 ## Overview
 AlertmanagerIntegration is script that will parse webhook notifications coming to Rocket.Chat.
 
+### Runbooks integration
+To speed up access to relevant data alerts can be linked to relevant Runbooks.
+It is possible in several ways:
+ * Thru URL in in alert annotations
+  * Advisable variable name is `runbook`, by default `url` and `runbookURL` are also acceptable
+ * Thru combination of alert `owner` and alert label `runBookTag`
+  * Array `RUNBOOK_BY_OWNER` contains combination of the matching owner name and base for Runbook URL
+  * `runBookTag` is attached to the base as an href anchor. (eg. http://www.example.com/runbook#runBookTag)
+
+
 ## Installation
 
 ### Rocket.Chat
@@ -15,10 +25,11 @@ AlertmanagerIntegration is script that will parse webhook notifications coming t
 
 3) Paste contents of [AlertmanagerIntegrations.js](https://github.com/kiwigrid/AlertmanagerRocketChat/blob/master/AlertmanagerIntegration.js) into Script field.
 
-4) Adjust script to fit your needs better, consider first 3 constants:
+4) Adjust script to fit your needs better, consider first 4 constants:
 * `INPUT_URL_PATTERN` - Regular expression or string search within `generatorURL`
 * `INPUT_URL_REPLACEMENT` - String replacement for the found INPUT_URL_PATTERN
 * `EXCLUDE_LABELS` - Labels in `alert.labels` excluded from the display in the alert message
+* `RUNBOOK_BY_OWNER` - array of runbooks maintained by teams firing alerts (if applicable)
 
 5) Create Integration. You'll see some values appear. Copy WebHook URL and proceed to Alertmanager.
 
@@ -43,7 +54,7 @@ receivers:
 
 If everything is OK you should see alerts like this:
 
-![alert example](https://i.imgur.com/tSbnoas.png)
+![alert example](https://i.imgur.com/DPHI92g.png)
 
 ## Testing
 
@@ -71,7 +82,9 @@ curl -X POST -H 'Content-Type: application/json' --data '
       },
       "annotations": {
         "description": "Test Service is experiencing high load for last 10 minutes - CPU load avg. 98%. Memory load avg. 73%. Network load avg. 38%",
-        "summary": "Test Service experiencing high load"
+        "summary": "Test Service experiencing high load",
+        "title_url": "https://github.com/kiwigrid/AlertmanagerRocketChat?title_url",
+        "runbook": "https://github.com/kiwigrid/AlertmanagerRocketChat?url"
       },
       "startsAt": "2019-07-15T11:24:55.5121419Z",
       "generatorURL": "http://prometheus-server:80/graph?g0.expr=dummyQuery&g0.tab=1'"
@@ -80,10 +93,11 @@ curl -X POST -H 'Content-Type: application/json' --data '
       "labels": {
         "alertname": "DataNodeOutage",
         "cluster": "production",
-        "owner": "Scrum Team Two",
+        "owner": "opsTeam",
         "replica": "prometheus-server",
         "datawarehouse": "europe-west-2",
-        "severity": "P1"
+        "severity": "P1",
+        "runBookTag": "testTag"
       },
       "annotations": {
         "description": "There has been a network connections issues to Data Node DateWarehouse_3. It has been unreachable for last 3 minutes.",
@@ -97,13 +111,13 @@ curl -X POST -H 'Content-Type: application/json' --data '
       "labels": {
         "alertname": "LocationHighTemp",
         "cluster": "none",
-        "owner": "Lab Team",
+        "owner": "opsteam",
         "replica": "prometheus-server",
         "datawarehouse": "company-location-2",
         "severity": "P5"
       },
       "annotations": {
-        "description": "High Temperature (exceeding 40Â°C over 45 minutes) reported in location Lab Room",
+        "description": "High Temperature (exceeding 40°C over 45 minutes) reported in location Lab Room",
         "summary": "High Temperature in Lab Room"
       },
       "startsAt": "2019-07-15T11:34:55.5121419Z",

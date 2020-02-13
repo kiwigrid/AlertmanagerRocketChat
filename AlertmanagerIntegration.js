@@ -2,6 +2,15 @@
 const INPUT_URL_PATTERN = /http.*\:\/\/.*\:.*\//i; // eg http://prometheus-internal-address:9090/ or regexp  like /http.*\:\/\/.*\:.*\//i
 const INPUT_URL_REPLACEMENT = "https://prometheus-server/"; // eg https://external-prometheus:8080/
 
+/*
+ * Links to runbooks if they are maintained by the team.
+ * Assumption is that runbook is build around URL#runBookTag, eg http://www.example.com/runbook#runBookTag
+ */
+const RUNBOOK_BY_OWNER = {
+  "opsTeam": "https://github.com/kiwigrid/AlertmanagerRocketChat/",
+  "exampleTeam": "http://www.example.com/runbook"
+};
+
 // labels to exclude from attachement fields
 const EXCLUDE_LABELS = ['owner', 'replica', 'alertname', 'cluster'];
 
@@ -22,13 +31,13 @@ const TEXT_LOCATION_PATHS = [
 ];
 // relative to single alert
 const AUTHOR_LINK_LOCATION_PATHS = [
-    ["annotations", "author_url"]
-];
-// relative to single alert
-const TITLE_LINK_LOCATION_PATHS = [
     ["annotations", "url"],
     ["annotations", "runbook"],
     ["annotations", "runbookURL"]
+];
+// relative to single alert
+const TITLE_LINK_LOCATION_PATHS = [
+    ["annotations", "title_url"]
 ];
 
 const ICON_CHECKMARK = "data:image/png;base64,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";
@@ -83,6 +92,14 @@ class Script {
           }
           return fallback;
       }
+
+      function getRunbookURL(object, fallback) {
+        if (!RUNBOOK_BY_OWNER[object.labels.owner] || !object.labels.runBookTag) {
+          return fallback;
+        }
+        return RUNBOOK_BY_OWNER[object.labels.owner]+"#"+object.labels.runBookTag;
+      }
+
       function unCamelCase(string) {
         string = string.replace(/([a-z])([A-Z])/g, '$1 $2');
         string = string.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
@@ -111,7 +128,7 @@ class Script {
 
 
         attachmentElement.author_name = unCamelCase(alertValue.labels.alertname);
-        attachmentElement.author_link = findFirstPath(alertValue, AUTHOR_LINK_LOCATION_PATHS, translateUri(alertValue.generatorURL));
+        attachmentElement.author_link = findFirstPath(alertValue, AUTHOR_LINK_LOCATION_PATHS, getRunbookURL(alertValue, translateUri(alertValue.generatorURL)));
         attachmentElement.collapsed = true;
 
         if (alertValue.status == "resolved") {
@@ -129,6 +146,7 @@ class Script {
         }
 
         attachmentElement.title = findFirstPath(alertValue, TITLE_LOCATION_PATHS, "unnamed alert");
+        // first try to get link from location path, if it fails try to build runbookURL from data (owner + runBookTag) fallback to generatorURL
         attachmentElement.title_link = findFirstPath(alertValue, TITLE_LINK_LOCATION_PATHS, translateUri(alertValue.generatorURL));
         attachmentElement.text = findFirstPath(alertValue, TEXT_LOCATION_PATHS, null);
 
